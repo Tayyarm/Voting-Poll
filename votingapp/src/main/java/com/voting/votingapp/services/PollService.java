@@ -40,6 +40,10 @@ public class PollService {
         // Optional helps us handle case when poll isn't found
         return pollRepository.findById(id);
     }
+    public void deletePoll(Long id) {
+        // This method helps us delete poll by ID
+        pollRepository.deleteById(id);
+    }
 
     public void vote(long pollId, int optionIndex) {
         //Get Poll from DataBase

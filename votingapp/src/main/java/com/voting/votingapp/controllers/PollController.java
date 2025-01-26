@@ -23,6 +23,7 @@ public class PollController {
     // Spring sees this and knows:
     // "I need to provide a PollService when creating PollController"
     public PollController(PollService pollService) {
+
         this.pollService = pollService;
     }
 
@@ -30,7 +31,16 @@ public class PollController {
     // @RequestBody tells Spring to convert incoming JSON to a Poll object
     @PostMapping
     public Poll createPoll(@RequestBody Poll poll){
+
         return pollService.createPoll(poll); // Works safely!
+    }
+
+    // Spring controller method to handle DELETE requests
+    // @DeleteMapping("/{id}") means it responds to DELETE requests to /api/polls/1, /api/polls/2, etc.
+    // @PathVariable takes the id from the URL and passes it to the method
+    @DeleteMapping("/{id}")
+    public void deletePoll(@PathVariable Long id) {
+        pollService.deletePoll(id); // Calls service method to delete poll
     }
     // Handles GET requests to /api/polls endpoint
     @GetMapping
@@ -49,7 +59,6 @@ public class PollController {
         return pollService.getPollById(id)// Ask service to find poll with this id
                 .map(ResponseEntity::ok) // If found, wrap in 200 OK response
                 .orElse(ResponseEntity.notFound().build()); // If not found, return 404
-
     }
 
     @PostMapping("/vote")
